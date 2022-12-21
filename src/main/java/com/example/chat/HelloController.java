@@ -2,7 +2,10 @@ package com.example.chat;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -11,10 +14,29 @@ import javafx.scene.input.KeyEvent;
 
 import java.io.*;
 import java.net.Socket;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HelloController {
     @FXML
     private TextField messageInput;
+    private Label welcomeText;
+
+    @FXML
+    private Button sendButton;
+
+    @FXML
+    private TextArea taChatHistory;
+
+    @FXML
+    private TextField tfMessage;
+
+    private List<String> messageList = new ArrayList<>();
+
+
     @FXML
     private TextArea messageOutput;
     private Socket client = null;
@@ -81,5 +103,15 @@ public class HelloController {
             e.printStackTrace();
         }
         this.messageOutput.appendText("Connection closed. Please restart your connection.");
+    }
+
+    @FXML
+    public void onSendButtonPress(ActionEvent e){
+        String message = tfMessage.getText();
+        messageList.add(message);
+        taChatHistory.clear();
+        for (String currentMessage:messageList) {
+            taChatHistory.appendText(currentMessage.toString() + "\n");
+        }
     }
 }
