@@ -10,6 +10,7 @@ public class ClientHandler extends Thread {
 
     private BufferedReader in;
     private PrintWriter out;
+    private PrintWriter fileOut;
 
     public ClientHandler(Socket socket, List<String> list){
         this.client = socket;
@@ -19,11 +20,15 @@ public class ClientHandler extends Thread {
     @Override
     public void run() {
         String threadName = Thread.currentThread().getName();
+        //For mac - path DESKTOP
+        String name = System.getProperty("user.home")+"/Desktop/"+threadName+".txt";
+        File file = new File(name);
         String line = "";
         String clientMessage = "";
         try{
             this.in = new BufferedReader(new InputStreamReader(this.client.getInputStream()));
             this.out = new PrintWriter(client.getOutputStream(), true);
+            this.fileOut = new PrintWriter(new FileWriter(name), true);
             while(true){
                 clientMessage = this.in.readLine();
                 if(clientMessage != null){
@@ -33,6 +38,7 @@ public class ClientHandler extends Thread {
                     }else{
                         this.chat.add(threadName + ": " + clientMessage);
                         this.out.println(this.getChatString());
+                        this.fileOut.println(threadName + ": " + clientMessage);
                         //Notify clients, that the chat got changed
                     }
                 }
@@ -44,6 +50,7 @@ public class ClientHandler extends Thread {
         try{
             this.in.close();
             this.out.close();
+            this.fileOut.close();
             this.client.close();
         }catch(IOException e){
             e.printStackTrace();
