@@ -12,6 +12,6 @@
     </padding>
 
     <Label fx:id="welcomeText" text="Messenger" />
-   <TextArea prefHeight="349.0" prefWidth="380.0" promptText="Chatverlauf" />
-   <TextField promptText="Nachricht" />
+   <TextArea fx:id="messageOutput" prefHeight="349.0" prefWidth="380.0" promptText="Chatverlauf" />
+   <TextField fx:id="messageInput" promptText="Nachricht" onAction="#onEnter"/>
 </VBox>
