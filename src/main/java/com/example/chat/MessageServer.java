@@ -1,19 +1,15 @@
 package com.example.chat;
 
-import javafx.scene.chart.PieChart;
-
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 public class MessageServer {
-    private ServerSocket server = null;
-    private Socket client = null;
+    public static final int PORT = 4711;
+    private ServerSocket server;
+    private Socket client;
     private List<String> chat = new ArrayList<>();
 
     public MessageServer() {
@@ -23,22 +19,22 @@ public class MessageServer {
     /**
      * Starts the server and holds an infinite loop for accepting new clients. Every new client will get a new thread.
      */
-    public void startServer(){
+    public void startServer() {
         try {
-            server = new ServerSocket(4711);
+            server = new ServerSocket(PORT);
             System.out.println("Server: Started - waiting for clients");
-        }catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
         //Infinite loop for accepting clients
-        while (true){
+        while (true) {
             //Accept client until server gets shutdown
-            try{
+            try {
                 client = server.accept();
                 System.out.println("Server: connected to Client " + client.getInetAddress());
                 Thread thread = new ClientHandler(client, chat);
                 thread.start();
-            }catch (IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
